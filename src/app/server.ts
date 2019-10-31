@@ -7,7 +7,6 @@ import logger from '@service/logger.service';
 import { LEVELS, COLORS } from '@util/enums';
 import { identifyRequest, corsHandler } from '@util/utils';
 import errorHandler from './services/error.service';
-import http from 'http';
 
 const init = async () => {
     try {
@@ -42,8 +41,7 @@ const init = async () => {
 
         const port = process.env.SERVER_PORT || 8000;
 
-        const httpServer = http.createServer(app).listen(port)
-        logger.info(`${process.env.NAMESPACE} server listening on port: ${port}`)
+        const httpServer = app.listen(port, () => logger.info(`${process.env.NAMESPACE} server listening on port: ${port}`));
 
         return httpServer
 
