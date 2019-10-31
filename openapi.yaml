@@ -1,0 +1,38 @@
+openapi: 3.0.1
+info:
+  title: Mitchell-West.com Service Api
+  description: 'This is a simple service to return stored linkedIn profile details to populate my personal page'
+  contact:
+    email: mitchawest@gmail.com
+  version: 1.0.0
+tags:
+- name: profile
+  description: profile details for user Mitch West
+paths:
+  /profile:
+    get:
+      tags:
+      - profile
+      summary: Retrieve all or a sub-set of my LinkedIn profile details
+      description: Retrieve all or a sub-set of my LinkedIn profile details
+      operationId: get-profile
+      parameters:
+      - name: entity
+        in: query
+        description: Filter profile details to single profile entity
+        required: false
+        schema:
+           type: string
+           enum:
+              - experience
+              - education
+              - recommendations
+              - skills
+              - certifications
+      responses:
+        200:
+          description: OK
+          content: {}
+        500:
+          description: Internal Server Error
+          content: {}
