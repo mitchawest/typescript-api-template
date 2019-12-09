@@ -11,15 +11,11 @@ if (process.env.NODE_ENV !== 'PROD') {
         .split('\r\n');
     env.forEach(variable => {
         const envSplit = variable.split('=');
-        const envKey = envSplit
-            .splice(0, 1)[0]
-            .replace(/'/g, '')
-            .replace(/"/g, '');
+        const envKey = envSplit.splice(0, 1)[0].replace(/^"||^'|'$/g, '');
         const envValue = envSplit
             .splice(0, envSplit.length)
             .join('=')
-            .replace(/'/g, '')
-            .replace(/"/g, '');
+            .replace(/^"|"$|^'|'$/g, '');
         if (envKey.length && envValue.length) process.env[envKey] = envValue;
     });
 }

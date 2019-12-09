@@ -13,7 +13,7 @@ const init = async () => {
         const app = express();
 
         /* Initialize logger with log level enumeration */
-        await logger.init(LEVELS, COLORS);
+        logger.init(LEVELS, COLORS);
 
         /* for parsing application/json */
         app.use(bodyParser.json());
@@ -25,11 +25,13 @@ const init = async () => {
         app.use(corsHandler);
 
         /* use to protect with strict transport security */
-        app.use(helmet.hsts({
-            maxAge: 10886400000, // Must be at least 18 weeks to be approved
-            includeSubDomains: true, // Must be enabled to be approved
-            preload: true
-        }));
+        app.use(
+            helmet.hsts({
+                maxAge: 10886400000, // Must be at least 18 weeks to be approved
+                includeSubDomains: true, // Must be enabled to be approved
+                preload: true
+            })
+        );
 
         /* X-XSS-Protection prevent reflected XSS attacks */
         app.use(helmet.xssFilter());
@@ -43,16 +45,15 @@ const init = async () => {
 
         const httpServer = app.listen(port, () => logger.info(`${process.env.NAMESPACE} server listening on port: ${port}`));
 
-        return httpServer
-
+        return httpServer;
     } catch (err) {
+        if (logger.debug) logger.debug(err);
         if (logger.critical) {
-            logger.critical(`Failed to start. Error: ${err}. Stopping node process.`);
-        } else {
-            console.log(`Failed to start. Error: ${err}. Stopping node process.`);
+            logger.critical(`Failed to run. Error: ${err}. Stopping node process.`);
+            return;
         }
-        setTimeout(() => process.exit(1), 5000);
+        console.log(`Failed to run. Error: ${err}. Stopping node process.`);
     }
-}
+};
 
 export default init;
