@@ -1,38 +1,125 @@
 openapi: 3.0.1
 info:
-  title: Mitchell-West.com Service Api
-  description: 'This is a simple service to return stored linkedIn profile details to populate my personal page'
-  contact:
-    email: mitchawest@gmail.com
-  version: 1.0.0
-tags:
-- name: profile
-  description: profile details for user Mitch West
+    title: Sample API
+    description: Sample API
+    version: '1.0'
 paths:
-  /profile:
-    get:
-      tags:
-      - profile
-      summary: Retrieve all or a sub-set of my LinkedIn profile details
-      description: Retrieve all or a sub-set of my LinkedIn profile details
-      operationId: get-profile
-      parameters:
-      - name: entity
-        in: query
-        description: Filter profile details to single profile entity
-        required: false
-        schema:
-           type: string
-           enum:
-              - experience
-              - education
-              - recommendations
-              - skills
-              - certifications
-      responses:
-        200:
-          description: OK
-          content: {}
-        500:
-          description: Internal Server Error
-          content: {}
+    /api-docs:
+        get:
+            summary: API Docs
+            tags:
+                - API Docs
+            description: Return openAPI config as JSON
+            operationId: get-api-docs
+            parameters:
+                - name: Content-Type
+                  in: header
+                  description: ''
+                  schema:
+                      enum:
+                          - application/json
+                      type: string
+            responses:
+                '200':
+                    description: OK
+                '400':
+                    description: Bad Request
+                '401':
+                    description: Not Authorized
+                '404':
+                    description: Not Found
+                '500':
+                    description: Server Error
+    /test/{responseType}:
+        get:
+            summary: Response Type
+            tags:
+                - Response Type
+            description: Retreive specified response type
+            operationId: get-response-type
+            parameters:
+                - name: Content-Type
+                  in: header
+                  description: ''
+                  schema:
+                      enum:
+                          - application/json
+                      type: string
+                - name: responseType
+                  in: path
+                  required: true
+                  description: Type of response requested
+                  schema:
+                      enum:
+                          - created
+                          - accepted
+                          - nonAuthoritative
+                          - noContent
+                          - resetContent
+                          - partialContent
+                          - multiStatus
+                          - alreadyReported
+                          - imUsed
+                          - errorByCode
+                          - errorByMessage
+                          - errorWithNone
+                      type: string
+            responses:
+                '200':
+                    description: OK
+                '400':
+                    description: Bad Request
+                '401':
+                    description: Not Authorized
+                '404':
+                    description: Not Found
+                '500':
+                    description: Server Error
+    /test:
+        post:
+            summary: Test Post
+            tags:
+                - Test Post
+            description: Echo post json body
+            operationId: post-test
+            parameters:
+                - name: Content-Type
+                  in: header
+                  description: Content Type
+                  schema:
+                      enum:
+                          - application/json
+                          - application/xml
+                          - application/x-www-form-urlencoded
+                          - text/plain
+                      type: string
+            requestBody:
+                description: Request body
+                required: false
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                    application/xml:
+                        schema:
+                            type: object
+                    application/x-www-form-urlencoded:
+                        schema:
+                            type: object
+                    multipart/form-data:
+                        schema:
+                            type: object
+                    text/plain:
+                        schema:
+                            type: string
+            responses:
+                '200':
+                    description: OK
+                '400':
+                    description: Bad Request
+                '401':
+                    description: Not Authorized
+                '404':
+                    description: Not Found
+                '500':
+                    description: Server Error

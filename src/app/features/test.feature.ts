@@ -1,15 +1,23 @@
 import logger from '@service/logger.service';
 import { IdentifiedRequestHandler } from '@model/request.model';
 import {
-    okResponse, createdResponse, acceptedResponse, nonAuthoritativeResponse, noContentResponse, resetContentResponse,
-    partialContentResponse, multiStatusResponse, alreadyReportedResponse, imUsedResponse
+    okResponse,
+    createdResponse,
+    acceptedResponse,
+    nonAuthoritativeResponse,
+    noContentResponse,
+    resetContentResponse,
+    partialContentResponse,
+    multiStatusResponse,
+    alreadyReportedResponse,
+    imUsedResponse
 } from '../services/response.service';
 
-const testHandler = new class Test {
-    get: IdentifiedRequestHandler = (req, res, next) => {
+const testHandler: { get: IdentifiedRequestHandler; post: IdentifiedRequestHandler } = {
+    get: (req, res, next) => {
         logger.info(`Request received | Method: ${req.method} | Path: ${req.path} | Identifier: ${req.requestIdentifier}`);
         logger.debug(`Request query: ${JSON.stringify(req.query)}`);
-        logger.debug(`Request params: ${JSON.stringify(req.params)}`)
+        logger.debug(`Request params: ${JSON.stringify(req.params)}`);
         logger.verbose(req);
 
         if (req.params.responseType === 'ok') okResponse(req, res, 'ok');
@@ -26,18 +34,18 @@ const testHandler = new class Test {
         if (req.params.responseType === 'errorByMessage') next({ message: 'bad request' });
         if (req.params.responseType === 'errorWithNone') next({});
         next();
-    }
+    },
 
-    post: IdentifiedRequestHandler = (req, res, next) => {
+    post: (req, res, next) => {
         logger.info(`Request received | Method: ${req.method} | Path: ${req.path} | Identifier: ${req.requestIdentifier}`);
         logger.debug(`Request query: ${JSON.stringify(req.query)}`);
         logger.debug(`Request params: ${JSON.stringify(req.params)}`);
-        logger.debug(`Request body: ${JSON.stringify(req.body)}`)
+        logger.debug(`Request body: ${JSON.stringify(req.body)}`);
         logger.verbose(req);
 
         okResponse(req, res, req.body);
         next();
     }
-}
+};
 
 export default testHandler;

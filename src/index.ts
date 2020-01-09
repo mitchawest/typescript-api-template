@@ -3,7 +3,7 @@ import fs from 'fs';
 import { LEVELS } from '@util/enums';
 
 /* Load env variables from .env file if non-production environment*/
-if (process.env.NODE_ENV !== 'PROD') {
+if (process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase() !== 'PROD' && process.env.NODE_ENV.toUpperCase() !== 'PRODUCTION') {
     console.log('Loading env...');
     const env = fs
         .readFileSync('./.env')

@@ -1,12 +1,12 @@
 interface ResponseBody {
-    requestMetaData: {
-        statusCode: number
+    responseMetaData: {
+        statusCode: number;
         requestIdentifier: string;
         api: string;
-    },
-    requestPayloadData: {
-        data: object | string | object[] | string[]
-    }
+    };
+    responsePayloadData: {
+        data: object | string | number | object[] | string[] | number[];
+    };
 }
 
 interface ErrorResponseBody {
@@ -20,17 +20,17 @@ interface ErrorResponseBody {
 export class CustomResponse {
     public response: ResponseBody;
 
-    constructor (statusCode: number, requestIdentifier: string, path: string, payload: ResponseBody['requestPayloadData']['data']) {
+    constructor(statusCode: number, requestIdentifier: string, path: string, payload: ResponseBody['responsePayloadData']['data']) {
         this.response = {
-            requestMetaData: {
+            responseMetaData: {
                 statusCode: statusCode,
                 requestIdentifier: requestIdentifier,
                 api: path
             },
-            requestPayloadData: {
+            responsePayloadData: {
                 data: payload
             }
-        }
+        };
     }
 
     getResponse = () => this.response;
@@ -39,14 +39,14 @@ export class CustomResponse {
 export class CustomErrorResponse {
     public errorResponse: ErrorResponseBody;
 
-    constructor (statusCode: number, requestIdentifier: string, path: string, message: string, stackTrace: Error) {
+    constructor(statusCode: number, requestIdentifier: string, path: string, message: string, stackTrace: Error) {
         this.errorResponse = {
             statusCode: statusCode,
             requestIdentifier: requestIdentifier,
             api: path,
             message: message,
             stackTrace: stackTrace.stack
-        }
+        };
     }
 
     getErrorResponse = () => this.errorResponse;
